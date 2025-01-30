@@ -1,16 +1,36 @@
--- 두 정수 A와 B를 입력받은 다음, A+B를 출력하는 프로그램을 작성하시오.
--- 입력
+local function add_big_number(a, b)
+  local len_a = #a
+  local len_b = #b
+  if len_a < len_b then
+    a = string.rep("0", len_b -len_a) .. a
+  else
+    b = string.rep("0", len_a - len_b) .. b
+  end
 
--- 첫째 줄에 A와 B가 주어진다. (0 < A,B < 1010000)
--- 출력
+  local result = {}
+  local carry = 0
+  local len = #a
+  for i = len, 1, -1 do
+    local digit_a = tonumber(string.sub(a, i, i))
+    local digit_b = tonumber(string.sub(b, i, i))
+    local sum = digit_a + digit_b + carry
+    carry = math.floor(sum / 10)
+    table.insert(result, 1, tostring(sum % 10))
+  end
 
--- 첫째 줄에 A+B를 출력한다.
--- 예제 입력 1
+  if carry > 0 then
+    table.insert(result, 1, tostring(carry))
+  end
 
--- 9223372036854775807 9223372036854775808
+  return table.concat(result)
+end
 
--- 예제 출력 1
+local input = io.read()
+local numbers = {}
+for num in input:gmatch("%S+") do
+  table.insert(numbers, num)
+end
 
--- 18446744073709551615
-local a, b = io.read("*n *n")
-print(a + b)
+local a, b = numbers[1], numbers[2]
+local result = add_big_number(a, b)
+print(result)
