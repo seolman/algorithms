@@ -11,4 +11,6 @@
 
 91
 ]]
--- TODO:
+local count, average = io.read():match("(%d+) (%d+)")
+print(count * (average - 1) + 1)
+
